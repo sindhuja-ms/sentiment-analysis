@@ -10,32 +10,11 @@ import joblib
 
 from preprocess import clean_text
 
-# Load dataset (with fallback)
-try:
-    df = pd.read_csv("data/feedback.csv")
-    df = df[['review', 'sentiment']]
+# ✅ Load dataset from Google Drive
+url = "https://drive.google.com/uc?id=1d2DxIm3ckFzqu6SW_giw_6DQ3MZZOBz8"
 
-except:
-    print("Using fallback sample dataset")
-
-    df = pd.DataFrame({
-        "review": [
-            "this product is amazing",
-            "worst experience ever",
-            "i love this",
-            "very bad service",
-            "excellent quality",
-            "not good at all"
-        ],
-        "sentiment": [
-            "positive",
-            "negative",
-            "positive",
-            "negative",
-            "positive",
-            "negative"
-        ]
-    })
+df = pd.read_csv(url)
+df = df[['review', 'sentiment']]
 
 # Remove missing values
 df = df.dropna()
@@ -59,12 +38,12 @@ X_test_vec = vectorizer.transform(X_test)
 
 # Models
 models = {
-    "logistic": LogisticRegression(),
+    "logistic": LogisticRegression(max_iter=200),
     "naive_bayes": MultinomialNB(),
-    "random_forest": RandomForestClassifier()
+    "random_forest": RandomForestClassifier(n_estimators=50)
 }
 
-# ✅ CREATE MODELS FOLDER (IMPORTANT FIX)
+# Create models folder
 os.makedirs("models", exist_ok=True)
 
 # Train and save
