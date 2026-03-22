@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiment Analysis</title>
+
+    <style>
+        body {
+            background-color: #0f172a;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 50px;
+        }
+
+        input {
+            padding: 12px;
+            width: 300px;
+            border-radius: 6px;
+            border: none;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #38bdf8;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Customer Sentiment Analysis</h1>
+
+<input id="text" placeholder="Enter feedback" />
+<br><br>
+
+<button onclick="predict()">Analyze</button>
+
+<div id="result"></div>
+
+<script>
+async function predict() {
+    let text = document.getElementById("text").value;
+
+    let res = await fetch("https://sentiment-api-w21k.onrender.com/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text: text })
+    });
+
+    let data = await res.json();
+
+    let result = data.prediction === 1 ? "Positive" : "Negative";
+
+    document.getElementById("result").innerText =
+        result + " | Confidence: " + data.confidence.toFixed(2);
+}
+</script>
+
+</body>
+</html>
