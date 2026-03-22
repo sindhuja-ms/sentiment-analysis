@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import joblib
+import os
 from preprocess import clean_text
 
 app = Flask(__name__)
@@ -28,5 +29,7 @@ def predict():
         "confidence": float(max(prob))
     })
 
+# ✅ IMPORTANT FIX FOR RENDER
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
