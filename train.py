@@ -15,7 +15,7 @@ url = "https://drive.google.com/uc?id=1d2DxIm3ckFzqu6SW_giw_6DQ3MZZOBz8"
 
 df = pd.read_csv(url)
 df = df[['review', 'sentiment']]
-
+df = df.sample(10000)
 # Remove missing values
 df = df.dropna()
 
@@ -40,7 +40,7 @@ X_test_vec = vectorizer.transform(X_test)
 models = {
     "logistic": LogisticRegression(max_iter=200),
     "naive_bayes": MultinomialNB(),
-    "random_forest": RandomForestClassifier(n_estimators=50)
+    "random_forest": RandomForestClassifier(n_estimators=10)
 }
 
 # Create models folder
