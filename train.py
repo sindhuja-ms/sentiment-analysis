@@ -9,11 +9,32 @@ import joblib
 
 from preprocess import clean_text
 
-# Load dataset
-df = pd.read_csv("data/feedback.csv")
+# Load dataset (with fallback)
+try:
+    df = pd.read_csv("data/feedback.csv")
+    df = df[['review', 'sentiment']]
 
-# Keep only required columns
-df = df[['review', 'sentiment']]
+except:
+    print("Using fallback sample dataset")
+
+    df = pd.DataFrame({
+        "review": [
+            "this product is amazing",
+            "worst experience ever",
+            "i love this",
+            "very bad service",
+            "excellent quality",
+            "not good at all"
+        ],
+        "sentiment": [
+            "positive",
+            "negative",
+            "positive",
+            "negative",
+            "positive",
+            "negative"
+        ]
+    })
 
 # Remove missing values
 df = df.dropna()
